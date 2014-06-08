@@ -52,7 +52,8 @@ class Pushed_Push
 	{
 		
 		$_params = [
-			'app_key' => $params['app_key'],
+			'auth_code' => $params['auth_code'],
+			'app_key' => $params['app_key'], 
 			'app_secret' => $params['app_secret'],
 			'target_type' => 'user',
 			'target_alias' => $params['target_alias'],
@@ -65,12 +66,13 @@ class Pushed_Push
 	
 	}
 
-	public function toPushedId($params = []) 
+	public function toPushedID($params = []) 
 
 	{
 	
 		$_params = [
-			'app_key' => $params['app_key'],
+			'pushed_id' => $params['pushed_id'],
+			'app_key' => $params['app_key'], 
 			'app_secret' => $params['app_secret'],
 			'target_type' => 'pushed_id',
 			'target_alias' => $params['target_alias'],

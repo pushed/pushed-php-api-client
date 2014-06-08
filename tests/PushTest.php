@@ -8,10 +8,13 @@ class PushTest extends \PHPUnit_Framework_TestCase
 
 	protected $stack;
 
-    protected function setUp()
-   
-    {
-   
+	protected function setUp()
+
+	{
+
+		// Prepare example notifications. Test purposing only.
+		// THIS CREDENTIALS WILL WORK NOT WORK.
+
 		$this->contentForAppNotification = [
 			'app_key' => 'ZyDKttsl53orGmGSGb7K',
 			'app_secret' => 'tbmlhFFzVfj0sbWkHMOsedHp3h6j2zgEPHU4rLZvnIZnf2x15CNX12MoxhufsTj7',
@@ -38,8 +41,38 @@ class PushTest extends \PHPUnit_Framework_TestCase
 			'content_type' => 'url',
 			'content_extra' => 'https://pushed.co',
 		]);
-   
-    }
+
+		$this->contentForUserNotification = [
+			'auth_code' => 'NzhVZ4EKV2cfyEhhCZjvsx0dFTZvzmnqfjj4BLTb',
+			'target_alias' => 'abc123',
+			'app_key' => 'APPKEY',
+			'app_secret' => 'APPSECRET',
+			'content' => 'contentForUserNotification notification sent at '.date('Y-m-d H:i:s'),
+			'content_type' => 'simple',
+		];
+
+		$this->contentForUserNotificationWithURL = array_merge($this->contentForUserNotification,[
+			'content' => 'contentForUserNotificationWithURL notification sent at '.date('Y-m-d H:i:s'),
+			'content_type' => 'url',
+			'content_extra' => 'https://pushed.co',
+		]);
+
+		$this->contentForPushedIDNotification = [
+			'pushed_id' => 'abcdefghijklmnrsopqrstuwxyz1234512345678',
+			'target_alias' => 'abc123',
+			'app_key' => 'APPKEY',
+			'app_secret' => 'APPSECRET',
+			'content' => 'contentForPushedIDNotification notification sent at '.date('Y-m-d H:i:s'),
+			'content_type' => 'simple',
+		];
+
+		$this->contentForPushedIDNotificationWithURL = array_merge($this->contentForPushedIDNotification,[
+			'content' => 'contentForPushedIDNotificationWithURL notification sent at '.date('Y-m-d H:i:s'),
+			'content_type' => 'url',
+			'content_extra' => 'https://pushed.co',
+		]);
+
+	}
 
 	public function testPushToAppSimple()
 
@@ -78,6 +111,46 @@ class PushTest extends \PHPUnit_Framework_TestCase
 		$pushToChannelWithURL = (new Pushed())->push->toChannel($this->contentForChannelNotificationWithURL);
 
 		$this->assertTrue(isset($pushToChannelWithURL['response']));
+
+	}
+
+	public function testPushToUserSimple()
+
+	{
+
+		$pushToUserSimple = (new Pushed())->push->toUser($this->contentForUserNotification);
+
+		$this->assertTrue(isset($pushToUserSimple['response']));
+
+	}
+
+	public function testPushToUserlWithURL()
+
+	{
+
+		$pushToUserWithURL = (new Pushed())->push->toUser($this->contentForUserNotificationWithURL);
+
+		$this->assertTrue(isset($pushToUserWithURL['response']));
+
+	}
+
+	public function testPushToPushedIDSimple()
+
+	{
+
+		$pushToPushedIDSimple = (new Pushed())->push->toPushedID($this->contentForPushedIDNotification);
+
+		$this->assertTrue(isset($pushToPushedIDSimple['response']));
+
+	}
+
+	public function testPushToPushedIDWithURL()
+
+	{
+
+		$pushToPushedIDWithURL = (new Pushed())->push->toPushedID($this->contentForPushedIDNotificationWithURL);
+
+		$this->assertTrue(isset($pushToPushedIDWithURL['response']));
 
 	}
 
