@@ -1,0 +1,26 @@
+{
+    "name": "pushed/pushed-php-api-client",
+    "type": "library",
+    "version": "0.0.1",
+    "description": "API client library for Pushed platform",
+    "keywords": ["pushed", "push", "notification"],
+    "homepage": "https://github.com/pushed/pushed-php-api-client",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Get Pushed Ltd",
+            "email": "hello@pushed.co",
+            "homepage": "https://pushed.co",
+            "role": "Developer"
+        }
+    ],
+    "require": {
+        "php": ">=5.3.0",
+    },
+    "autoload": {
+        "psr-0": {
+            "Pushed": "src/"
+        }
+    },
+    "minimum-stability": "stable"
+}
