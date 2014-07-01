@@ -2,3 +2,5 @@
 composer.phar
 composer.lock
 .DS_Store
+development-test-credentials.php
+production-test-credentials.php
