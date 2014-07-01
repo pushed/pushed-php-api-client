@@ -11,9 +11,7 @@ class Pushed
 {
 
 	public $ch;
-	//public $root = 'https://api.pushed.co/1';
-	public $root = 'http://staging.pushed.io/api/1';
-	public $debug = true;
+	public $root = 'https://api.pushed.co/1';
 
 	public static $error_map = array(
         "ValidationError" => "Pushed_ValidationError",
@@ -46,6 +44,7 @@ class Pushed
 	}
 
 	public function call($url, $params, $method) {
+
 		$ch = $this->ch;
 
 		switch ($method) {
