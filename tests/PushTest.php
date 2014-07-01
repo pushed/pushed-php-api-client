@@ -2,22 +2,66 @@
 
 include('src/Pushed.php');
 
+unset($_ENV['pushed_php_api_client_test']);
+
+// Load Credentials
+$debug = TRUE;
+$credentials = $debug ? 'development-test-credentials.php' : 'production-test-credentials.php';
+if(file_exists($credentials))
+	include($credentials);
+
 class PushTest extends \PHPUnit_Framework_TestCase
 
 {
-
-	protected $stack;
 
 	protected function setUp()
 
 	{
 
-		// Prepare example notifications. Test purposing only.
-		// THIS CREDENTIALS WILL WORK NOT WORK.
+
+		$this->credentials = [
+
+			'endpoint' => (isset($_ENV['pushed_php_api_client_test']['endpoint'])) ? $_ENV['pushed_php_api_client_test']['endpoint'] : null,
+
+			'app' => [
+
+				'app_key' => (isset($_ENV['pushed_php_api_client_test']['app']['app_key'])) ? $_ENV['pushed_php_api_client_test']['app']['app_key'] : null,
+				'app_secret' => (isset($_ENV['pushed_php_api_client_test']['app']['app_secret'])) ? $_ENV['pushed_php_api_client_test']['app']['app_secret'] : null,
+
+			],
+
+			'channel' => [
+
+				'target_alias' => (isset($_ENV['pushed_php_api_client_test']['channel']['target_alias'])) ? $_ENV['pushed_php_api_client_test']['channel']['target_alias'] : null,
+				'app_key' => (isset($_ENV['pushed_php_api_client_test']['channel']['app_key'])) ? $_ENV['pushed_php_api_client_test']['channel']['app_key'] : null,
+				'app_secret' => (isset($_ENV['pushed_php_api_client_test']['channel']['app_secret'])) ? $_ENV['pushed_php_api_client_test']['channel']['app_secret'] : null,
+
+			],
+
+			'user' => [
+
+				'auth_code' => (isset($_ENV['pushed_php_api_client_test']['user']['auth_code'])) ? $_ENV['pushed_php_api_client_test']['user']['auth_code'] : null,
+				'target_alias' => (isset($_ENV['pushed_php_api_client_test']['user']['target_alias'])) ? $_ENV['pushed_php_api_client_test']['user']['target_alias'] : null,
+				'app_key' => (isset($_ENV['pushed_php_api_client_test']['user']['app_key'])) ? $_ENV['pushed_php_api_client_test']['user']['app_key'] : null,
+				'app_secret' => (isset($_ENV['pushed_php_api_client_test']['user']['app_secret'])) ? $_ENV['pushed_php_api_client_test']['user']['app_secret'] : null,
+
+			],
+
+			'pushed_id' => [
+
+				'pushed_id' => (isset($_ENV['pushed_php_api_client_test']['pushed_id']['pushed_id'])) ? $_ENV['pushed_php_api_client_test']['pushed_id']['pushed_id'] : null,
+				'target_alias' => (isset($_ENV['pushed_php_api_client_test']['pushed_id']['target_alias'])) ? $_ENV['pushed_php_api_client_test']['pushed_id']['target_alias'] : null,
+				'app_key' => (isset($_ENV['pushed_php_api_client_test']['pushed_id']['app_key'])) ? $_ENV['pushed_php_api_client_test']['pushed_id']['app_key'] : null,
+				'app_secret' => (isset($_ENV['pushed_php_api_client_test']['pushed_id']['app_secret'])) ? $_ENV['pushed_php_api_client_test']['pushed_id']['app_secret'] : null,
+			],
+
+		];
+
+		/** App Tests */
 
 		$this->contentForAppNotification = [
-			'app_key' => 'ZyDKttsl53orGmGSGb7K',
-			'app_secret' => 'tbmlhFFzVfj0sbWkHMOsedHp3h6j2zgEPHU4rLZvnIZnf2x15CNX12MoxhufsTj7',
+			'app_key' => $this->credentials['app']['app_key'],
+			'app_secret' => $this->credentials['app']['app_secret'],
 			'content' => 'contentForAppNotification notification sent at '.date('Y-m-d H:i:s'),
 			'content_type' => 'simple',
 		];
@@ -28,10 +72,12 @@ class PushTest extends \PHPUnit_Framework_TestCase
 			'content_extra' => 'https://pushed.co',
 		]);
 
+		/** Channel Tests */
+
 		$this->contentForChannelNotification = [
-			'target_alias' => 'abc123',
-			'app_key' => 'APPKEY',
-			'app_secret' => 'APPSECRET',
+			'target_alias' => $this->credentials['channel']['target_alias'],
+			'app_key' => $this->credentials['channel']['app_key'],
+			'app_secret' => $this->credentials['channel']['app_secret'],
 			'content' => 'contentForChannelNotification notification sent at '.date('Y-m-d H:i:s'),
 			'content_type' => 'simple',
 		];
@@ -42,11 +88,13 @@ class PushTest extends \PHPUnit_Framework_TestCase
 			'content_extra' => 'https://pushed.co',
 		]);
 
+		/** User Tests */
+
 		$this->contentForUserNotification = [
-			'auth_code' => 'NzhVZ4EKV2cfyEhhCZjvsx0dFTZvzmnqfjj4BLTb',
-			'target_alias' => 'abc123',
-			'app_key' => 'APPKEY',
-			'app_secret' => 'APPSECRET',
+			'auth_code' => $this->credentials['user']['auth_code'],
+			'target_alias' => $this->credentials['user']['target_alias'],
+			'app_key' => $this->credentials['user']['app_key'],
+			'app_secret' => $this->credentials['user']['app_secret'],
 			'content' => 'contentForUserNotification notification sent at '.date('Y-m-d H:i:s'),
 			'content_type' => 'simple',
 		];
@@ -57,11 +105,13 @@ class PushTest extends \PHPUnit_Framework_TestCase
 			'content_extra' => 'https://pushed.co',
 		]);
 
+		/** Pushed-ID Tests */
+
 		$this->contentForPushedIDNotification = [
-			'pushed_id' => 'abcdefghijklmnrsopqrstuwxyz1234512345678',
-			'target_alias' => 'abc123',
-			'app_key' => 'APPKEY',
-			'app_secret' => 'APPSECRET',
+			'pushed_id' => $this->credentials['pushed_id']['pushed_id'],
+			'target_alias' => $this->credentials['pushed_id']['target_alias'],
+			'app_key' => $this->credentials['pushed_id']['app_key'],
+			'app_secret' => $this->credentials['pushed_id']['app_secret'],
 			'content' => 'contentForPushedIDNotification notification sent at '.date('Y-m-d H:i:s'),
 			'content_type' => 'simple',
 		];
@@ -72,15 +122,22 @@ class PushTest extends \PHPUnit_Framework_TestCase
 			'content_extra' => 'https://pushed.co',
 		]);
 
+		print_r($this->credentials);die();
+
 	}
 
 	public function testPushToAppSimple()
 
 	{
 
-		$pushToAppSimple = (new Pushed())->push->toApp($this->contentForAppNotification);
+		$pushToAppSimple = (new Pushed());
+		$pushToAppSimple->root = $this->credentials['endpoint'];
 
-		$this->assertTrue(isset($pushToAppSimple['response']));
+		$response = $pushToAppSimple->push->toApp($this->contentForAppNotification);
+
+		echo json_encode($response).PHP_EOL.PHP_EOL;
+
+		$this->assertTrue(isset($response['response']));
 
 	}
 
@@ -88,9 +145,14 @@ class PushTest extends \PHPUnit_Framework_TestCase
 
 	{
 
-		$pushToAppWithURL = (new Pushed())->push->toApp($this->contentForAppNotificationWithURL);
+		$pushToAppWithURL = (new Pushed());
+		$pushToAppWithURL->root = $this->credentials['endpoint'];
 
-		$this->assertTrue(isset($pushToAppWithURL['response']));
+		$response = $pushToAppWithURL->push->toApp($this->contentForAppNotificationWithURL);
+
+		echo json_encode($response).PHP_EOL.PHP_EOL;
+
+		$this->assertTrue(isset($response['response']));
 
 	}
 
@@ -98,9 +160,14 @@ class PushTest extends \PHPUnit_Framework_TestCase
 
 	{
 
-		$pushToChannelSimple = (new Pushed())->push->toChannel($this->contentForChannelNotification);
+		$pushToChannelSimple = (new Pushed());
+		$pushToChannelSimple->root = $this->credentials['endpoint'];
 
-		$this->assertTrue(isset($pushToChannelSimple['response']));
+		$response = $pushToChannelSimple->push->toChannel($this->contentForChannelNotification);
+
+		echo json_encode($response).PHP_EOL.PHP_EOL;
+
+		$this->assertTrue(isset($response['response']));
 
 	}
 
@@ -108,9 +175,14 @@ class PushTest extends \PHPUnit_Framework_TestCase
 
 	{
 
-		$pushToChannelWithURL = (new Pushed())->push->toChannel($this->contentForChannelNotificationWithURL);
+		$pushToChannelWithURL = (new Pushed());
+		$pushToChannelWithURL->root = $this->credentials['endpoint'];
 
-		$this->assertTrue(isset($pushToChannelWithURL['response']));
+		$response = $pushToChannelWithURL->push->toChannel($this->contentForChannelNotificationWithURL);
+
+		echo json_encode($response).PHP_EOL.PHP_EOL;
+
+		$this->assertTrue(isset($response['response']));
 
 	}
 
@@ -118,9 +190,14 @@ class PushTest extends \PHPUnit_Framework_TestCase
 
 	{
 
-		$pushToUserSimple = (new Pushed())->push->toUser($this->contentForUserNotification);
+		$pushToUserSimple = (new Pushed());
+		$pushToUserSimple->root = $this->credentials['endpoint'];
 
-		$this->assertTrue(isset($pushToUserSimple['response']));
+		$response = $pushToUserSimple->push->toUser($this->contentForUserNotification);
+
+		echo json_encode($response).PHP_EOL.PHP_EOL;
+
+		$this->assertTrue(isset($response['response']));
 
 	}
 
@@ -128,9 +205,14 @@ class PushTest extends \PHPUnit_Framework_TestCase
 
 	{
 
-		$pushToUserWithURL = (new Pushed())->push->toUser($this->contentForUserNotificationWithURL);
+		$pushToUserWithURL = (new Pushed());
+		$pushToUserWithURL->root = $this->credentials['endpoint'];
 
-		$this->assertTrue(isset($pushToUserWithURL['response']));
+		$response = $pushToUserWithURL->push->toUser($this->contentForUserNotificationWithURL);
+
+		echo json_encode($response).PHP_EOL.PHP_EOL;
+
+		$this->assertTrue(isset($response['response']));
 
 	}
 
@@ -138,9 +220,14 @@ class PushTest extends \PHPUnit_Framework_TestCase
 
 	{
 
-		$pushToPushedIDSimple = (new Pushed())->push->toPushedID($this->contentForPushedIDNotification);
+		$pushToPushedIDSimple = (new Pushed());
+		$pushToPushedIDSimple->root = $this->credentials['endpoint'];
 
-		$this->assertTrue(isset($pushToPushedIDSimple['response']));
+		$response = $pushToPushedIDSimple->push->toPushedID($this->contentForPushedIDNotification);
+
+		echo json_encode($response).PHP_EOL.PHP_EOL;
+
+		$this->assertTrue(isset($response['response']));
 
 	}
 
@@ -148,9 +235,14 @@ class PushTest extends \PHPUnit_Framework_TestCase
 
 	{
 
-		$pushToPushedIDWithURL = (new Pushed())->push->toPushedID($this->contentForPushedIDNotificationWithURL);
+		$pushToPushedIDWithURL = (new Pushed());
+		$pushToPushedIDWithURL->root = $this->credentials['endpoint'];
 
-		$this->assertTrue(isset($pushToPushedIDWithURL['response']));
+		$response = $pushToPushedIDWithURL->push->toPushedID($this->contentForPushedIDNotificationWithURL);
+
+		echo json_encode($response).PHP_EOL.PHP_EOL;
+
+		$this->assertTrue(isset($response['response']));
 
 	}
 
