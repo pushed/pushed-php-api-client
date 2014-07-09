@@ -12,6 +12,7 @@ class Pushed
 
 	public $ch;
 	public $root = 'https://api.pushed.co/1';
+	public $debug = false;
 
 	public static $error_map = array(
         "ValidationError" => "Pushed_ValidationError",
