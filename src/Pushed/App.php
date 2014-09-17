@@ -16,7 +16,7 @@ class Pushed_App
 
 	{
 
-		$mandatory_params = ['name','description','category','icon_url','api_key','pushed_id'];
+		$mandatory_params = ['name','description','supercategory','icon_url','api_key','pushed_id','tags'];
 		$checkMandatoryParams = $this->master->checkMandatoryParams($mandatory_params, $params);
 
 		return $this->master->call('app', $params, 'PUT', ['X-Api-Key: '.$params['api_key'], 'X-Pushed-Id: '.$params['pushed_id']]);
