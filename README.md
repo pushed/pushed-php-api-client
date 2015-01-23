@@ -1,7 +1,5 @@
 # Pushed Official PHP API Client
 
-## 	Installation
-
 How to Install
 --------------
 
@@ -53,6 +51,7 @@ $params = [
 
 ### User Notification
 
+```php
 $params = [
 	'app_key' => 'your_app_key',
 	'app_secret' => 'your_app_secret',
@@ -62,9 +61,11 @@ $params = [
 ];
 
 (new \Pushed())->push->toUser($params);
+```
 
 ### Pushed-ID Notification
 
+```php
 $params = [
 	'app_key' => 'your_app_key',
 	'app_secret' => 'your_app_secret',
@@ -74,10 +75,11 @@ $params = [
 ];
 
 (new \Pushed())->push->toUser($params);
+```
 
 About Pushed
 --------------
 
-Pushed is your personal notification center with super awesome services. The app allows you to receive notifications when something important happens. Learn more aboute Pushed: [https://pushed.co](https://pushed.co).
+Pushed is your personal notification center with super awesome services. The app allows you to receive notifications when something important happens. Learn more aboute Pushed: [pushed.co](https://pushed.co). If you find a bug or you think you can improve this script feel free to reach us at [dev@pushed.co](dev@pushed.co).
 
 Packagist Site: [https://packagist.org/packages/pushed/pushed-php-api-client](https://packagist.org/packages/pushed/pushed-php-api-client)
