@@ -6,7 +6,7 @@ require_once 'Pushed/Authorize.php';
 require_once 'Pushed/Subscribe.php';
 require_once 'Pushed/Analytics.php';
 
-class Pushed 
+class Pushed
 
 {
 
@@ -24,7 +24,7 @@ class Pushed
 
 	public function __construct($apikey=null) {
         $this->ch = curl_init();
-		
+
         curl_setopt($this->ch, CURLOPT_USERAGENT, 'Pushed-PHP/1.0.0');
         curl_setopt($this->ch, CURLOPT_FOLLOWLOCATION, true);
         curl_setopt($this->ch, CURLOPT_HEADER, false);
@@ -36,6 +36,7 @@ class Pushed
 
         $this->authorize = new Pushed_Authorize($this);
         $this->analytics = new Pushed_Analytics($this);
+        $this->app = new Pushed_App($this);
         $this->push = new Pushed_Push($this);
         $this->subscribe = new Pushed_Subscribe($this);
 	}
@@ -44,7 +45,7 @@ class Pushed
 		curl_close($this->ch);
 	}
 
-	public function call($url, $params, $method) {
+	public function call($url, $params, $method, $additional_headers = []) {
 
 		$ch = $this->ch;
 
@@ -68,14 +69,14 @@ class Pushed
 				curl_setopt($ch, CURLOPT_CUSTOMREQUEST, 'PUT');
 				curl_setopt($ch, CURLOPT_POSTFIELDS, http_build_query($params));
 			break;
-			
+
 			default:
 				throw new Pushed_Error('Invalid method: ' . $method . '.');
 			break;
 		}
 
 		curl_setopt($ch, CURLOPT_URL, $this->root . $url);
-		curl_setopt($ch, CURLOPT_HTTPHEADER, array('Content-Type: application/x-www-form-urlencoded'));
+		curl_setopt($ch, CURLOPT_HTTPHEADER, array_merge(['Content-Type: application/x-www-form-urlencoded'], $additional_headers));
 		curl_setopt($ch, CURLOPT_VERBOSE, $this->debug);
 
 		$start = microtime(true);
@@ -107,6 +108,38 @@ class Pushed
 		}
 
 		return $result;
+	}
+
+	public function checkMandatoryParams($mandatory_params = [], $params_to_check = [])
+
+	{
+
+		if(empty($mandatory_params))
+
+			return false;
+
+		if(empty($params_to_check))
+
+			return false;
+
+
+
+		foreach($mandatory_params as $mandatory_param)
+
+		{
+
+			if(!array_key_exists($mandatory_param, $params_to_check))
+
+			{
+
+				throw new Pushed_Error($mandatory_param.' is missing!');
+
+			}
+
+		}
+
+		return false;
+
 	}
 
 	public function castError($result) {
