@@ -1,10 +1,11 @@
 <?php
 
+require_once 'Pushed/Analytics.php';
+require_once 'Pushed/App.php';
+require_once 'Pushed/Authorize.php';
 require_once 'Pushed/Exceptions.php';
 require_once 'Pushed/Push.php';
-require_once 'Pushed/Authorize.php';
 require_once 'Pushed/Subscribe.php';
-require_once 'Pushed/Analytics.php';
 
 class Pushed
 
