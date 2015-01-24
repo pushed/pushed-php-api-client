@@ -57,7 +57,7 @@ $params = [
 	'app_secret' => 'your_app_secret',
 	'content' => 'Your notification content',
 	'target_alias' => 'destination_user_alias',
-	'auth_code' => 'destination_user_auth_code',
+	'access_token' => 'destination_user_access_token',
 ];
 
 (new \Pushed())->push->toUser($params);

@@ -52,7 +52,7 @@ class Pushed_Push
 	{
 		
 		$_params = [
-			'auth_code' => $params['auth_code'],
+			'access_token' => $params['access_token'],
 			'app_key' => $params['app_key'], 
 			'app_secret' => $params['app_secret'],
 			'target_type' => 'user',
